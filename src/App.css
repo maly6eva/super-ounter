@@ -1,0 +1,92 @@
+.app {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    font-family: 'Inter', sans-serif;
+    background: #f3f4f6;
+    height: 100vh;
+    justify-content: center;
+}
+
+.title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.settings-box,
+.counter-box {
+    background: white;
+    border-radius: 12px;
+    padding: 100px 150px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+.input {
+    margin-left: 8px;
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 80px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.5rem;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.set-btn {
+    background: #2563eb;
+    color: white;
+    margin-top: 10px;
+}
+
+.inc-btn {
+    background: #22c55e;
+    color: white;
+}
+
+.reset-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.count-value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+.count-red {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #cc2126;
+}
+.err{
+    color: red;
+}
