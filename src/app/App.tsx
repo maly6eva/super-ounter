@@ -1,17 +1,18 @@
 import './App.css'
-import {ChangeEvent, useReducer} from "react";
-import {Button} from "./components/Button/Button.tsx";
-import {ResultCounter} from "./components/ResultCounter/ResultCounter.tsx";
-import {SettingsInputs} from "./components/SettingsInputs/SettingsInputs.tsx";
-import button from "./components/Button/Button.module.css"
+import {ChangeEvent} from "react";
+import {Button} from "../components/Button/Button.tsx";
+import {ResultCounter} from "../components/ResultCounter/ResultCounter.tsx";
+import {SettingsInputs} from "../components/SettingsInputs/SettingsInputs.tsx";
+import button from "../components/Button/Button.module.css"
 import {
-    counterReducer,
     incrementAC,
-    initialState,
     resetAC, setCountAC,
     setIsSetPressedAC,
     setValuesAC
-} from "./model/counter-reducer.ts";
+} from "../model/counter-reducer.ts";
+import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
+import {useAppSelector} from "../common/hooks/useAppSelector.ts";
+import {selectCounter} from "../model/counter-selectors.ts";
 
 export type CounterType = {
     count: number,
@@ -21,9 +22,10 @@ export type CounterType = {
 }
 
 export const App = () => {
-    const [state, dispatch] = useReducer(counterReducer, initialState);
+    const dispatch = useAppDispatch()
+    const counter = useAppSelector(selectCounter)
 
-    
+
     // useEffect(() => {
     //     const counterMax = localStorage.getItem('counter-max')
     //     const counterStart = localStorage.getItem('counter-start')
@@ -57,18 +59,18 @@ export const App = () => {
 
 
     const startCounter = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setValuesAC(state.max, +e.currentTarget.value))
-        dispatch(setIsSetPressedAC(false))
+        dispatch(setValuesAC({max: counter.max, start: +e.currentTarget.value}))
+        dispatch(setIsSetPressedAC({value: false}))
     }
 
     const maxCounter = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setValuesAC(+e.currentTarget.value, state.start))
-        dispatch(setIsSetPressedAC(false))
+        dispatch(setValuesAC({max: +e.currentTarget.value, start: counter.start}))
+        dispatch(setIsSetPressedAC({value: false}))
     }
 
     const setButton = () => {
-        dispatch(setCountAC(state.start));
-        dispatch(setIsSetPressedAC(true))
+        dispatch(setCountAC({value: counter.start}));
+        dispatch(setIsSetPressedAC({value: true}))
     }
 
     const resInc = () => {
@@ -77,16 +79,16 @@ export const App = () => {
 
     const resReset = () => {
         dispatch(resetAC())
-        dispatch(setIsSetPressedAC(true))
+        dispatch(setIsSetPressedAC({value: true}))
     }
 
-    const disabled = state.max < 0 || state.start < 0 || state.start === state.max || state.isSetPressed
+    const disabled = counter.max < 0 || counter.start < 0 || counter.start === counter.max || counter.isSetPressed
 
     return (
         <div className="app">
             <SettingsInputs
-                max={state.max}
-                start={state.start}
+                max={counter.max}
+                start={counter.start}
                 disabled={disabled}
                 startCounter={startCounter}
                 maxCounter={maxCounter}
@@ -94,16 +96,16 @@ export const App = () => {
             />
             <div className="counter-box">
                 <ResultCounter
-                    count={state.count}
-                    max={state.max}
-                    start={state.start}
-                    isSetPressed={state.isSetPressed}
+                    count={counter.count}
+                    max={counter.max}
+                    start={counter.start}
+                    isSetPressed={counter.isSetPressed}
                 />
                 <div className={button.buttons}>
                     <Button
-                        className={`${button.btn} ${button.incBtn} ${state.count === state.max ? button.disabledStyleInc : ''}`}
+                        className={`${button.btn} ${button.incBtn} ${counter.count === counter.max ? button.disabledStyleInc : ''}`}
                         onClick={resInc}
-                        disabled={state.count === state.max}
+                        disabled={counter.count === counter.max}
                         text={'Inc'}
                     />
                     <Button
