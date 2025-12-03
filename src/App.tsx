@@ -1,84 +1,92 @@
 import './App.css'
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useReducer} from "react";
 import {Button} from "./components/Button/Button.tsx";
 import {ResultCounter} from "./components/ResultCounter/ResultCounter.tsx";
 import {SettingsInputs} from "./components/SettingsInputs/SettingsInputs.tsx";
 import button from "./components/Button/Button.module.css"
+import {
+    counterReducer,
+    incrementAC,
+    initialState,
+    resetAC, setCountAC,
+    setIsSetPressedAC,
+    setValuesAC
+} from "./model/counter-reducer.ts";
 
+export type CounterType = {
+    count: number,
+    max: number,
+    start: number,
+    isSetPressed: boolean
+}
 
 export const App = () => {
-    const [count, setCount] = useState<number>(0);
-    const [max, setMax] = useState(0);
-    const [start, setStart] = useState(0);
-    const [isSetPressed, setIsSetPressed] = useState(false)
+    const [state, dispatch] = useReducer(counterReducer, initialState);
 
-
-    useEffect(() => {
-        const counterMax = localStorage.getItem('counter-max')
-        const counterStart = localStorage.getItem('counter-start')
-        const counterCount = localStorage.getItem('counter-count')
-        const counterIsSet = localStorage.getItem('counter-isSet')
-
-        if (counterMax) {
-            const newMax = JSON.parse(counterMax)
-            setMax(newMax)
-        }
-        if (counterStart) {
-            const newStart = JSON.parse(counterStart)
-            setStart(newStart)
-        }
-        if (counterCount) {
-            const newCount = JSON.parse(counterCount)
-            setCount(newCount)
-        }
-        if (counterIsSet) {
-            const isSet = JSON.parse(counterIsSet)
-            setIsSetPressed(isSet)
-        }
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem('counter-max', JSON.stringify(max))
-        localStorage.setItem('counter-start', JSON.stringify(start))
-        localStorage.setItem('counter-count', JSON.stringify(count))
-        localStorage.setItem('counter-isSet', JSON.stringify(isSetPressed))
-    }, [max, start, count, isSetPressed])
+    
+    // useEffect(() => {
+    //     const counterMax = localStorage.getItem('counter-max')
+    //     const counterStart = localStorage.getItem('counter-start')
+    //     const counterCount = localStorage.getItem('counter-count')
+    //     const counterIsSet = localStorage.getItem('counter-isSet')
+    //
+    //     if (counterMax) {
+    //         const newMax = JSON.parse(counterMax)
+    //         setMax(newMax)
+    //     }
+    //     if (counterStart) {
+    //         const newStart = JSON.parse(counterStart)
+    //         setStart(newStart)
+    //     }
+    //     if (counterCount) {
+    //         const newCount = JSON.parse(counterCount)
+    //         setCount(newCount)
+    //     }
+    //     if (counterIsSet) {
+    //         const isSet = JSON.parse(counterIsSet)
+    //         setIsSetPressed(isSet)
+    //     }
+    // }, [])
+    //
+    // useEffect(() => {
+    //     localStorage.setItem('counter-max', JSON.stringify(max))
+    //     localStorage.setItem('counter-start', JSON.stringify(start))
+    //     localStorage.setItem('counter-count', JSON.stringify(count))
+    //     localStorage.setItem('counter-isSet', JSON.stringify(isSetPressed))
+    // }, [max, start, count, isSetPressed])
 
 
     const startCounter = (e: ChangeEvent<HTMLInputElement>) => {
-        setStart(+e.currentTarget.value)
-        setIsSetPressed(false)
+        dispatch(setValuesAC(state.max, +e.currentTarget.value))
+        dispatch(setIsSetPressedAC(false))
     }
 
     const maxCounter = (e: ChangeEvent<HTMLInputElement>) => {
-        setMax(+e.currentTarget.value)
-        setIsSetPressed(false)
+        dispatch(setValuesAC(+e.currentTarget.value, state.start))
+        dispatch(setIsSetPressedAC(false))
     }
 
     const setButton = () => {
-        setCount(start);
-        setIsSetPressed(true)
+        dispatch(setCountAC(state.start));
+        dispatch(setIsSetPressedAC(true))
     }
 
     const resInc = () => {
-        setCount(prev => {
-            const next = prev + 1
-            return next > max ? max : next
-        })
+        dispatch(incrementAC())
     }
 
     const resReset = () => {
-        setCount(start)
-        setIsSetPressed(true)
+        dispatch(resetAC())
+        dispatch(setIsSetPressedAC(true))
     }
 
-    const disabled = max < 0 || start < 0 || start === max || isSetPressed
+    const disabled = state.max < 0 || state.start < 0 || state.start === state.max || state.isSetPressed
 
     return (
         <div className="app">
             <SettingsInputs
-                max={max}
-                start={start}
+                max={state.max}
+                start={state.start}
                 disabled={disabled}
                 startCounter={startCounter}
                 maxCounter={maxCounter}
@@ -86,16 +94,16 @@ export const App = () => {
             />
             <div className="counter-box">
                 <ResultCounter
-                    count={count}
-                    max={max}
-                    start={start}
-                    isSetPressed={isSetPressed}
+                    count={state.count}
+                    max={state.max}
+                    start={state.start}
+                    isSetPressed={state.isSetPressed}
                 />
                 <div className={button.buttons}>
                     <Button
-                        className={`${button.btn} ${button.incBtn} ${count === max ? button.disabledStyleInc : ''}`}
+                        className={`${button.btn} ${button.incBtn} ${state.count === state.max ? button.disabledStyleInc : ''}`}
                         onClick={resInc}
-                        disabled={count === max}
+                        disabled={state.count === state.max}
                         text={'Inc'}
                     />
                     <Button
