@@ -1,7 +1,14 @@
-import {CounterType} from "../app/App.tsx";
+
 import {createAction, createReducer} from "@reduxjs/toolkit";
 
-export const initialState: CounterType = {
+export type CounterTypes = {
+    count: number
+    max: number
+    start: number
+    isSetPressed: boolean
+}
+
+export const initialState: CounterTypes = {
     count: 0,
     max: 0,
     start: 0,

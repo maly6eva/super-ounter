@@ -1,4 +1,4 @@
-import {counterReducer} from "../model/counter-reducer.ts";
+import {counterReducer} from "@/features/counter/model/counter-reducer.ts";
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 
 const rootReducer = combineReducers({
