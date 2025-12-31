@@ -1,11 +1,11 @@
-import {Button} from "@/shared/ui/Button/Button.tsx";
+import {Button} from "@/common/components/Button/Button.tsx";
 import {ChangeEvent} from "react";
-import {InputBlock} from "../../../shared/ui/InputBlock.tsx";
+import {InputBlock} from "@/common/components/InputBlock/InputBlock.tsx";
 import s from './SettingsInputs.module.css';
-import button from '@/shared/ui/Button/Button.module.css'
+import button from '@/common/components/Button/Button.module.css'
 import {setCountAC, setIsSetPressedAC, setValuesAC} from "@/features/counter/model/counter-reducer.ts";
-import {useAppDispatch} from "@/shared/lib/redux/useAppDispatch.ts";
-import {useAppSelector} from "@/shared/lib/redux/useAppSelector.ts";
+import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
+import {useAppSelector} from "@/common/hooks/useAppSelector.ts";
 import {selectCounter} from "@/features/counter/model/counter-selectors.ts";
 
 

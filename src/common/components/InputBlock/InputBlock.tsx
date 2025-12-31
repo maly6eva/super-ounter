@@ -1,5 +1,5 @@
 import {ChangeEvent} from "react";
-import s from '../../features/counter/ui/SettingsInputs.module.css';
+import s from '@/features/counter/ui/SettingsInputs/SettingsInputs.module.css';
 
 type InputBlockType = {
     label: string;

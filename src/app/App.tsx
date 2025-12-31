@@ -1,5 +1,5 @@
 import s from'./App.module.css'
-import {CounterPages} from "@/pages/counter/CounterPages.tsx";
+import {CounterPages} from "@/features/counter/ui/CounterPages/CounterPages.tsx";
 
 
 export const App = () => {
