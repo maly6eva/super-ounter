@@ -1,4 +1,4 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent, memo} from "react";
 import s from '@/features/counter/ui/SettingsInputs/SettingsInputs.module.css';
 
 type InputBlockType = {
@@ -8,7 +8,7 @@ type InputBlockType = {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const InputBlock = ({label, value, hasError, onChange}: InputBlockType) => {
+export const InputBlock = memo(({label, value, hasError, onChange}: InputBlockType) => {
     return (
         <label className={s.label}>
             {label}
@@ -20,5 +20,5 @@ export const InputBlock = ({label, value, hasError, onChange}: InputBlockType) =
             />
         </label>
     );
-};
+});
 

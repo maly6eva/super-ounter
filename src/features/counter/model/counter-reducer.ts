@@ -24,14 +24,19 @@ export const setCountAC = createAction<{ value: number }>('counter/setCount')
 export const counterReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(incrementAC, (state) => {
-            state.count = Math.min(state.count + 1, state.max)
+           if(!state.isSetPressed) return
+            if(state.count < state.max){
+                state.count += 1
+            }
         })
         .addCase(resetAC, (state) => {
             state.count = state.start
+            state.isSetPressed = true
         })
         .addCase(setValuesAC, (state, action) => {
             state.max = action.payload.max
             state.start = action.payload.start
+            state.isSetPressed = false
         })
         .addCase(setIsSetPressedAC, (state, action) => {
             state.isSetPressed = action.payload.value

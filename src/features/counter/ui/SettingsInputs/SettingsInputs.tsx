@@ -1,5 +1,5 @@
 import {Button} from "@/common/components/Button/Button.tsx";
-import {ChangeEvent} from "react";
+import {ChangeEvent, useCallback} from "react";
 import {InputBlock} from "@/common/components/InputBlock/InputBlock.tsx";
 import s from './SettingsInputs.module.css';
 import button from '@/common/components/Button/Button.module.css'
@@ -15,20 +15,19 @@ export const SettingsInputs = () => {
     const counter = useAppSelector(selectCounter)
     const {start, max} = counter
 
-    const startCounter = (e: ChangeEvent<HTMLInputElement>) => {
+    const startCounter = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setValuesAC({max: counter.max, start: +e.currentTarget.value}))
         dispatch(setIsSetPressedAC({value: false}))
-    }
+    }, [dispatch, counter.max])
 
-    const maxCounter = (e: ChangeEvent<HTMLInputElement>) => {
+    const maxCounter = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setValuesAC({max: +e.currentTarget.value, start: counter.start}))
         dispatch(setIsSetPressedAC({value: false}))
-    }
-
-    const setButton = () => {
+    }, [dispatch, counter.start])
+    const setButton = useCallback(() => {
         dispatch(setCountAC({value: counter.start}));
         dispatch(setIsSetPressedAC({value: true}))
-    }
+    }, [dispatch, counter.start])
     const disabled = counter.max < 0 || counter.start < 0 || counter.start === counter.max || counter.isSetPressed
     return (
         <div className={s.settingsBox}>
